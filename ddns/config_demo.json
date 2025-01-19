@@ -1,0 +1,14 @@
+{
+  "CLOUDFLARE": {
+    "CF_API_TOKEN": "xx",
+    "CF_ZONE_ID": "xxx",
+    "CF_RECORD_ID": "xxx",
+    "DNS_TYPE": "A",
+    "DNS_DOMAIN_NAME": "xxx.com",
+    "DNS_DOMAIN_CONTENT": "xxx.com",
+    "DNS_TTL": 1, // 填1会使用cloudflare默认值
+    "DNS_PROXIED": false
+  },
+  "IP_API_URL": "http://xxx.com",
+  "INTERVAL": 180
+}
