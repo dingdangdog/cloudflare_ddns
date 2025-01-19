@@ -8,38 +8,36 @@ import (
 	"strings"
 )
 
-// 处理请求并返回客户端的IP地址
+// Processes the request and returns the client's IP address
 func whoisme(w http.ResponseWriter, r *http.Request) {
-	// 先从请求头获取 X-Forwarded-For 字段，如果没有则获取 RemoteAddr
+	// get the X-Forwarded-For field from the request header, if not, get the RemoteAddr
 	clientIP := r.Header.Get("X-Forwarded-For")
 	if clientIP == "" {
 		clientIP = r.RemoteAddr
 	}
-	// 如果IP后面有端口，去掉端口部分
+	// if there is a port after the IP, remove the port part
 	if strings.Contains(clientIP, ":") {
 		clientIP = strings.Split(clientIP, ":")[0]
 	}
 
-	// 保存IP到文件
+	// save IP to ip.last File
 	err := os.WriteFile("ip.last", []byte("Client IP: "+clientIP), 0644)
 	if err != nil {
 		http.Error(w, fmt.Sprintf("Error saving IP to file: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	// 返回请求者的IP
+	// return the requester's IP
 	w.WriteHeader(http.StatusOK)
 	w.Write([]byte(clientIP))
 }
 
 func lastip(w http.ResponseWriter, r *http.Request) {
-	// 先从请求头获取 X-Forwarded-For 字段，如果没有则获取 RemoteAddr
 	ip, err := os.ReadFile("ip.last")
 	if err != nil {
 		log.Println("error")
 		return
 	}
-	// 返回请求者的IP
 	w.WriteHeader(http.StatusOK)
 	w.Write(ip)
 }

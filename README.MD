@@ -1,15 +1,25 @@
 # CloudFalre DDNS
 
+## GetStarted
+
+### Manual
+
+1. Download `ddns_client` in [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases), or [build ddns_client](#Package_ddns_client) yourself;
+2. Download `config.json` in [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases);
+3. Please fill in your configuration information in `config.json`, remember to delete the comments;
+4. Put `ddns_client` and `config.json` in the same folder;
+5. Set `ddns_client` as an executable file and run.
+
 ## ddns
 
-想办法拿到真实 `IP`，拿到 `IP` 后调用 `Cloudflare API` 修改 `DNS` 记录。
+Find a way to get the real `IP`, and after getting the `IP`, call the `Cloudflare API` to modify the `DNS` record.
 
-### 打包ddns
+### Package_ddns_client
 
-> **提示**：在 `Windows` 开发环境中，请使用 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
+> **Tip**: In the `Windows` development environment, please execute the command in the `CMD` terminal command line, not in `PowerShell`, otherwise the packaged result may not be executed normally
 
 ```bash
-# 打包Linux二进制文件，在Windows开发环境下的打包方式
+# Packaging Linux binary files in Windows development environment
 cd ddns
 SET GOOS=linux
 SET GOARCH=amd64
@@ -19,16 +29,16 @@ go build -o ddns_client ddns.go
 
 ## ip
 
-一个简单的获取客户端公网IP并返回的服务
+A simple service that gets the client's public IP and returns it.
 
-> 用于部署到服务器上，`ddns client` 请求服务器的这个接口，获取客户端真实IP并返回。
+> deploy on the server, `ddns client` requests this interface of the server, obtains the client's real IP and returns it.
 
-### 打包ip服务
+### Package whoisme_server
 
-> **提示**：在 `Windows` 开发环境中，请在 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
+> **Tip**: In the `Windows` development environment, please execute the command in the `CMD` terminal command line, not in `PowerShell`, otherwise the packaged result may not be executed normally
 
 ```bash
-# 打包Linux二进制文件，在Windows开发环境下的打包方式
+# Packaging Linux binary files in Windows development environment
 cd ip
 SET GOOS=linux
 SET GOARCH=amd64
