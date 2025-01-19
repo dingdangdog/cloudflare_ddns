@@ -1,4 +1,4 @@
-# CloudFalre DDNS
+# CloudFlare DDNS
 
 ## GetStarted
 
