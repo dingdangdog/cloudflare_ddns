@@ -98,13 +98,11 @@ func updateDNS(config *Config, ip string) error {
 	}
 	defer resp.Body.Close()
 
-	now := time.Now().Format("2006/01/02 15:04:05")
-	// handle response
 	if resp.StatusCode == http.StatusOK {
-		log.Printf("%s: DNS record updated successfully to IP: %s \n", now, ip)
+		log.Printf("DNS record updated successfully to IP: %s \n", ip)
 	} else {
 		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("%s: failed to update DNS: %v - %s \n", now, resp.StatusCode, string(body))
+		return fmt.Errorf("failed to update DNS: %v - %s \n", resp.StatusCode, string(body))
 	}
 
 	return nil
