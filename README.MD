@@ -2,6 +2,8 @@
 
 Simple script to quickly implement DDN based on CloudFlare.
 
+[简体中文](./README_ZH.MD) [English]
+
 ## GetStarted
 
 ### Auto
@@ -14,11 +16,15 @@ Simple script to quickly implement DDN based on CloudFlare.
 curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_ddns.sh | bash
 ```
 
+Modify the `config_demo.json` and run `ddns_client`.
+
 - whoisme_server
 
 ```sh
 curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_whoisme.sh | bash
 ```
+
+Modify the `config_demo.json` and run `whoisme_server`.
 
 ### Manual
 

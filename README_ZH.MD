@@ -1,5 +1,9 @@
 # CloudFalre DDNS
 
+简单的脚本快速实现基于Cloudflare的DDNS。
+
+[简体中文] [English](./README.MD)
+
 ## 安装
 
 > 🧨**提示**：无论自动还是手动安装，请自行修改配置 `config.json` ！如果使用其他获取IP服务，请自行修改源码（如果无需授权等，可以尝试不修改源码）
@@ -12,11 +16,15 @@
 curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_ddns.sh | bash
 ```
 
+修改配置并运行 `ddns_client`。
+
 - whoisme_server
 
 ```sh
 curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_whoisme.sh | bash
 ```
+
+修改配置并运行 `whoisme_server`。
 
 ### 手动安装
 
