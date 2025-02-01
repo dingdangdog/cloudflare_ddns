@@ -1,0 +1,10 @@
+services:
+  whoisme:
+    image: dingdangdog/cfddns:whoisme_0.1.2
+    container_name: whoisme
+    restart: always
+#    network_mode: "host"
+    ports:
+      - 12321:12321
+    volumes:
+      - ./config.json:/app/config.json
