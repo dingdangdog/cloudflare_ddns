@@ -34,9 +34,6 @@ jobs:
           GOARCH=amd64
           go build -o build/whoisme_server ip/whoisme.go
 
-      - name: Check build directory
-        run: ls -al build/
-        
       - name: Build ddns
         run: |
           GOOS=linux
@@ -50,10 +47,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: go-binaries
-          path: build/whoisme_server build/ddns_client  # Use the correct paths
-
-      - name: Check build directory
-        run: ls -al build/
+          path: build/*  # Use the correct paths
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -62,4 +56,4 @@ jobs:
           name: 🎉Release ${{ env.version }}
           tag_name: v${{ env.version }}
           body: v${{ env.version }}
-          files: build/whoisme_server build/ddns_client  # Use the correct paths
+          files: build/*  # Use the correct paths
