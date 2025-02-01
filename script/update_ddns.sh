@@ -14,7 +14,13 @@ else
     echo "lastest version: $TAG"
 fi
 
-# 3. 下载二进制文件和配置文件示例
+# 3. 检测操作系统和架构
+OS=$(uname -s)
+ARCH=$(uname -m)
+
+echo "OS: $OS, Arch: $ARCH"
+
+# 4. 下载二进制文件和配置文件示例
 BINARY_URL="https://github.com/$REPO/releases/download/$TAG/ddns_client"
 CONFIG_URL="https://raw.githubusercontent.com/$REPO/main/ddns/config_demo.json"
 
@@ -33,21 +39,23 @@ else
     exit 1
 fi
 
-# 4. 设置下载的文件名
+# 5. 设置下载的文件名
 BINARY_FILE="ddns_client"
 CONFIG_FILE="config_demo.json"
 
-# 5. 下载二进制文件
+# 6. 下载二进制文件
 echo "downloading ddns_client..."
 curl -L -o $BINARY_FILE $BINARY_URL
 
-# 6. 下载配置文件示例
+# 7. 下载配置文件示例
 echo "downloading config_demo.json..."
 curl -L -o $CONFIG_FILE $CONFIG_URL
 
-# 7. 更新完毕，给出提示
+# 8. 更新完毕，给出提示
 echo "download completed."
 
-# 8. 赋予二进制文件执行权限
-chmod +x $BINARY_FILE
-echo "$BINARY_FILE has been updated."
+# 9. 赋予二进制文件执行权限
+if [[ "$OS" == "Linux" || "$OS" == "Darwin" ]]; then
+    chmod +x $BINARY_FILE
+    echo "$BINARY_FILE has been updated."
+fi
