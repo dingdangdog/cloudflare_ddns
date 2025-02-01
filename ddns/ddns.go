@@ -8,6 +8,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strings"
 	"time"
 )
 
@@ -23,9 +24,12 @@ type CloudflareConfig struct {
 }
 
 type Config struct {
-	CLOUDFLARE CloudflareConfig `json:"CLOUDFLARE"`
-	IP_API_URL string           `json:"IP_API_URL"`
-	INTERVAL   int              `json:"INTERVAL"`
+	CLOUDFLARE     CloudflareConfig `json:"CLOUDFLARE"`
+	IP_API_URL     string           `json:"IP_API_URL"`
+	DDD_CLIENT_ID  int              `json:"DDD_CLIENT_ID"`
+	DDD_CLIENT_KEY string           `json:"DDD_CLIENT_KEY"`
+	MODE           string           `json:"MODE"`
+	INTERVAL       int              `json:"INTERVAL"`
 }
 
 // Get json file content
@@ -45,8 +49,10 @@ func loadConfig(filePath string) (*Config, error) {
 }
 
 // Get Public IP
-func getPublicIP(ipApiUrl string) (string, error) {
-	resp, err := http.Get(ipApiUrl)
+func getPublicIP(config *Config) (string, error) {
+	// 设置http get 请求的 url传参，参数为id 和 key
+	url := fmt.Sprintf("%s?id=%d&key=%s", config.IP_API_URL, config.DDD_CLIENT_ID, config.DDD_CLIENT_KEY)
+	resp, err := http.Get(url)
 	if err != nil {
 		return "", fmt.Errorf("error getting public IP: %v", err)
 	}
@@ -121,13 +127,17 @@ func main() {
 
 	for {
 		// log.Printf("Fetching current public IP...")
-		ip, err := getPublicIP(config.IP_API_URL)
+		ip, err := getPublicIP(config)
 		if err != nil {
 			log.Printf("Error fetching public IP: %v \n", err)
 			// sleep
 			time.Sleep(interval)
 			continue
 		}
+		// 按,分割ip，保留第一个元素，并去除空格
+		ip = strings.Split(ip, ",")[0]
+		ip = strings.TrimSpace(ip)
+
 		oldip, _ := os.ReadFile("ip.last")
 		// save as the old IP, skip processing
 		if ip == string(oldip) {
@@ -142,9 +152,11 @@ func main() {
 		// log.Printf("Current public IP: %s \n", ip)
 
 		// Update Cloudflare DNS records
-		err = updateDNS(config, ip)
-		if err != nil {
-			log.Printf("Error updating DNS: %v \n", err)
+		if config.MODE != "development" {
+			err = updateDNS(config, ip)
+			if err != nil {
+				log.Printf("Error updating DNS: %v \n", err)
+			}
 		}
 
 		// sleep
