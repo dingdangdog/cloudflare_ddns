@@ -5,7 +5,7 @@ REPO="dingdangdog/cloudflare_ddns"
 TAG="v0.1.0"  # 这里可以动态获取最新版本，如果需要
 
 # 2. 获取最新发布的版本（如果想动态获取版本）
-latest_version=$(curl --silent "https://api.github.com/repos/$REPO/releases/latest" | jq -r .tag_name)
+latest_version=$(curl --silent "https://api.github.com/repos/$REPO/releases/latest" | grep -o '"tag_name": "[^"]*' | sed 's/"tag_name": "//')
 
 if [ "$latest_version" != "$TAG" ]; then
     echo "new version: $latest_version"
