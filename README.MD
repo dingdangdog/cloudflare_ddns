@@ -2,6 +2,20 @@
 
 ## GetStarted
 
+### Auto
+
+- ddns_client
+
+```sh
+curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_ddns.sh | bash
+```
+
+- whoisme_server
+
+```sh
+curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_whoisme.sh | bash
+```
+
 ### Manual
 
 1. Download `ddns_client` in [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases), or [build ddns_client](#Package_ddns_client) yourself;

@@ -8,10 +8,10 @@ TAG="v0.1.0"  # 这里可以动态获取最新版本，如果需要
 latest_version=$(curl --silent "https://api.github.com/repos/$REPO/releases/latest" | jq -r .tag_name)
 
 if [ "$latest_version" != "$TAG" ]; then
-    echo "新版本: $latest_version"
+    echo "new version: $latest_version"
     TAG="$latest_version"
 else
-    echo "已是最新版本: $TAG"
+    echo "lastest version: $TAG"
 fi
 
 # 3. 下载二进制文件和配置文件示例
