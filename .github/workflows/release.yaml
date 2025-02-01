@@ -47,7 +47,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: go-binaries
+          name: ${{ matrix.os }}-${{ matrix.goarch }}
           path: build/*  # Upload all the binaries
 
       - name: Create Release
