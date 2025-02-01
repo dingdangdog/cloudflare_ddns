@@ -9,6 +9,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    strategy:
+      matrix:
+        os: [linux, darwin, windows]  # 支持的操作系统
+        goarch: [amd64, arm64]        # 支持的架构
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -28,17 +33,13 @@ jobs:
         run: |
           mkdir -p build  # Ensure the build directory exists
 
-      - name: Build whoisme
+      - name: Build whoisme for ${{ matrix.os }} and ${{ matrix.goarch }}
         run: |
-          GOOS=linux
-          GOARCH=amd64
-          go build -o build/whoisme_server ip/whoisme.go
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/whoisme_server-${{ matrix.os }}-${{ matrix.goarch }} ip/whoisme.go
 
-      - name: Build ddns
+      - name: Build ddns for ${{ matrix.os }} and ${{ matrix.goarch }}
         run: |
-          GOOS=linux
-          GOARCH=amd64
-          go build -o build/ddns_client ddns/ddns.go
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/ddns_client-${{ matrix.os }}-${{ matrix.goarch }} ddns/ddns.go
 
       - name: Check build directory
         run: ls -al build/
@@ -47,7 +48,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: go-binaries
-          path: build/*  # Use the correct paths
+          path: build/*  # Upload all the binaries
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
@@ -56,4 +57,4 @@ jobs:
           name: 🎉Release ${{ env.version }}
           tag_name: v${{ env.version }}
           body: v${{ env.version }}
-          files: build/*  # Use the correct paths
+          files: build/*  # Upload all the binaries to the release

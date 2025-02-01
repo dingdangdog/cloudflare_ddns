@@ -18,6 +18,21 @@ fi
 BINARY_URL="https://github.com/$REPO/releases/download/$TAG/ddns_client"
 CONFIG_URL="https://raw.githubusercontent.com/$REPO/main/ddns/config_demo.json"
 
+if [[ "$OS" == "Linux" && "$ARCH" == "x86_64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/ddns_client-linux-amd64"
+elif [[ "$OS" == "Darwin" && "$ARCH" == "x86_64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/ddns_client-darwin-amd64"
+elif [[ "$OS" == "Darwin" && "$ARCH" == "arm64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/ddns_client-darwin-arm64"
+elif [[ "$OS" == "Linux" && "$ARCH" == "aarch64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/ddns_client-linux-arm64"
+elif [[ "$OS" == "Windows" && "$ARCH" == "x86_64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/ddns_client-windows-amd64.exe"
+else
+    echo "Unsupported platform: $OS $ARCH"
+    exit 1
+fi
+
 # 4. 设置下载的文件名
 BINARY_FILE="ddns_client"
 CONFIG_FILE="config_demo.json"

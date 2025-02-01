@@ -18,6 +18,21 @@ fi
 BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server"
 CONFIG_URL="https://raw.githubusercontent.com/$REPO/main/ip/config_demo.json"
 
+if [[ "$OS" == "Linux" && "$ARCH" == "x86_64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-linux-amd64"
+elif [[ "$OS" == "Darwin" && "$ARCH" == "x86_64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-darwin-amd64"
+elif [[ "$OS" == "Darwin" && "$ARCH" == "arm64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-darwin-arm64"
+elif [[ "$OS" == "Linux" && "$ARCH" == "aarch64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-linux-arm64"
+elif [[ "$OS" == "Windows" && "$ARCH" == "x86_64" ]]; then
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-windows-amd64.exe"
+else
+    echo "Unsupported platform: $OS $ARCH"
+    exit 1
+fi
+
 # 4. 设置下载的文件名
 BINARY_FILE="whoisme_server"
 CONFIG_FILE="config_demo.json"
