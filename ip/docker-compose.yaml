@@ -1,7 +1,7 @@
 services:
-  fsddns:
+  cfddns:
     image: dingdangdog/cfddns:ddns_0.1.2
-    container_name: fsddns
+    container_name: cfddns
     restart: always
     volumes:
       - ./config.json:/app/config.json
