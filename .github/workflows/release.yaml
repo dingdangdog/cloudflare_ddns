@@ -29,10 +29,16 @@ jobs:
           mkdir -p build  # Ensure the build directory exists
 
       - name: Build whoisme
-        run: GOOS=linux GOARCH=amd64 go build -o build/whoisme_server ip/whoisme.go
+        run: |
+          GOOS=linux
+          GOARCH=amd64
+          go build -o build/whoisme_server ip/whoisme.go
 
       - name: Build ddns
-        run: GOOS=linux GOARCH=amd64 go build -o build/ddns_client ddns/ddns.go
+        run: |
+          GOOS=linux
+          GOARCH=amd64
+          go build -o build/ddns_client ddns/ddns.go
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
