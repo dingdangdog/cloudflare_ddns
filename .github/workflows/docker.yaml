@@ -14,19 +14,19 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 步骤 2: 获取版本号
-      - name: Get version
-        id: get_version
-        run: |
-          version=$(git describe --tags --always --match 'v*' | sed -n 's|^v\([0-9]*\.[0-9]*\.[0-9]*\)\(-.*\)\{0,1\}|\1|p')
-          echo "version=$version" >> $GITHUB_ENV  # Store version as an environment variable
-
-      # 步骤 3: 登录到 Docker Hub（你需要在仓库的 Secrets 中设置这些凭据）
+      # 步骤 2: 登录到 Docker Hub（你需要在仓库的 Secrets 中设置这些凭据）
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      # 步骤 3: 获取版本号
+      - name: Get version
+        id: get_version
+        run: |
+          version=$(git describe --tags --always --match 'v*' | sed -n 's|^v\([0-9]*\.[0-9]*\.[0-9]*\)\(-.*\)\{0,1\}|\1|p')
+          echo "version=$version" >> $GITHUB_ENV  # Store version as an environment variable
 
       # 步骤 4: 构建并推送 ddns 镜像
       - name: Build & Push DDNS image
