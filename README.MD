@@ -1,8 +1,12 @@
 # CloudFlare DDNS
 
+Simple script to quickly implement DDN based on CloudFlare.
+
 ## GetStarted
 
 ### Auto
+
+> 🧨**Tip**: Whether you install it automatically or manually, please modify the configuration `config.json` yourself! If you use other IP acquisition services, please modify the source code yourself (if you don't need authorization, you can try not to modify the source code)
 
 - ddns_client
 
@@ -18,13 +22,13 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 
 ### Manual
 
-1. Download `ddns_client` in [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases), or [build ddns_client](#Package_ddns_client) yourself;
-2. Download `config.json` in [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases);
-3. Please fill in your configuration information in `config.json`, remember to delete the comments;
-4. Put `ddns_client` and `config.json` in the same folder;
-5. Set `ddns_client` as an executable file and run.
+1. Download `ddns_client` or `whoisme_server` from [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases), or [Package ddns_client](#Package_ddns_client) / [Package whoisme_server](#Package_whoisme_server) by yourself;
+2. Download ddns_client [config_demo.json](./ddns/config demo.json) or whoisme_server [config_demo.json](./ip/config_demo.json) to your device, rename it to `config.json`, and then edit the configuration information。
+3. Run `ddns_client` or `whoisme_server`。
 
 ## ddns
+
+- [ddns.go](./ddns/ddns.go)
 
 Find a way to get the real `IP`, and after getting the `IP`, call the `Cloudflare API` to modify the `DNS` record.
 
@@ -41,7 +45,33 @@ SET GOARCH=amd64
 go build -o ddns_client ddns.go
 ```
 
+### Config Options
+
+- [ddns/config_demo.json](./ddns/config_demo.json)
+
+```json
+{
+  "CLOUDFLARE": {
+    "CF_API_TOKEN": "xx", // Please get your Cloudflare configuration
+    "CF_ZONE_ID": "xxx", // Please get your Cloudflare configuration
+    "CF_RECORD_ID": "xxx", // Please get your Cloudflare configuration
+    "DNS_TYPE": "A",
+    "DNS_DOMAIN_NAME": "xxx.com", // DNS domain name to be set
+    "DNS_DOMAIN_CONTENT": "xxx.com", // Temporarily unused
+    "DNS_TTL": 1, // Fill in 1 to use the default value of cloudflare
+    "DNS_PROXIED": false
+  },
+  "IP_API_URL": "http://xxx.com/whoisme", // Interface to obtain the real public IP
+  "DDD_CLIENT_ID": 0, // Whoisme interface authorization id
+  "DDD_CLIENT_KEY": "Test_Cilent_Key", // Whoisme interface authorization key
+  "MODE": "development",
+  "INTERVAL": 180
+}
+```
+
 ## ip
+
+- [whoisme.go](./ip/whoisme.go)
 
 A simple service that gets the client's public IP and returns it.
 
@@ -54,7 +84,7 @@ cd ip
 go run whoisme.go
 ```
 
-### Package whoisme_server
+### Package_whoisme_server
 
 > **Tip**: In the `Windows` development environment, please execute the command in the `CMD` terminal command line, not in `PowerShell`, otherwise the packaged result may not be executed normally
 
