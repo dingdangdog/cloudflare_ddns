@@ -55,6 +55,6 @@ jobs:
         with:
           token: ${{ secrets.GH_TOKEN }}
           name: 🎉Release ${{ env.version }}
-          # tag_name: v${{ env.version }}
+          tag_name: v${{ env.version }}
           body: v${{ env.version }}
           files: build/*  # Upload all the binaries to the release
