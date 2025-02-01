@@ -33,6 +33,13 @@ A simple service that gets the client's public IP and returns it.
 
 > deploy on the server, `ddns client` requests this interface of the server, obtains the client's real IP and returns it.
 
+### Dev Run
+
+```sh
+cd ip
+go run whoisme.go
+```
+
 ### Package whoisme_server
 
 > **Tip**: In the `Windows` development environment, please execute the command in the `CMD` terminal command line, not in `PowerShell`, otherwise the packaged result may not be executed normally

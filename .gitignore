@@ -1,6 +1,7 @@
-ddns/config.json
+*/config.json
 
 */ip.last
+*/*.ip
 
 ddns/ddns_client
 
