@@ -16,7 +16,7 @@ fi
 
 # 3. 下载二进制文件和配置文件示例
 BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server"
-CONFIG_URL="https://raw.githubusercontent.com/$REPO/main/whoisme/config_demo.json"
+CONFIG_URL="https://raw.githubusercontent.com/$REPO/main/ip/config_demo.json"
 
 # 4. 设置下载的文件名
 BINARY_FILE="whoisme_server"
