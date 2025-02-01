@@ -1,0 +1,46 @@
+name: Build Go binaries for multiple platforms
+
+on:
+  push:
+    tags:
+      - v*.*.*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Get version
+        id: get_version
+        run: |
+          version=$(git describe --tags --always --match 'v*' | sed -n 's|^v\([0-9]*\.[0-9]*\.[0-9]*\)\(-.*\)\{0,1\}|\1|p')
+          echo "version=$version" >> $GITHUB_ENV  # Store version as an environment variable
+
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: "1.20"
+
+      - name: Build whoisme
+        run: GOOS=linux GOARCH=amd64 go build -o build/whoisme_server ip/whoisme.go
+
+      - name: Build ddns
+        run: GOOS=linux GOARCH=amd64 go build -o bulid/ddns_client ddns/ddns.go
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: go-binaries
+          path: build/whoisme_server build/ddns_client  # Use the correct paths
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          name: 🎉Release ${{ env.version }}
+          tag_name: v${{ env.version }}
+          body: v${{ env.version }}
+          files: build/whoisme_server build/ddns_client  # Use the correct paths
