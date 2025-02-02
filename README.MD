@@ -1,6 +1,6 @@
 # CloudFlare DDNS
 
-Simple script to quickly implement DDN based on CloudFlare.
+Simple script to quickly implement DDNS based on CloudFlare.
 
 [简体中文](./README_ZH.MD) [English]
 
