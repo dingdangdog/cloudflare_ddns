@@ -141,11 +141,12 @@ func main() {
 		oldip, _ := os.ReadFile("ip.last")
 		// save as the old IP, skip processing
 		if ip == string(oldip) {
-			log.Printf("Old IP: %s \n", ip)
+			// log.Printf("Old IP: %s \n", ip)
 			// sleep
 			time.Sleep(interval)
 			continue
 		}
+		log.Printf("new IP: %s \n", ip)
 		// save the new IP to ip.last File
 		_ = os.WriteFile("ip.last", []byte(ip), 0644)
 
