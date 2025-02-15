@@ -116,15 +116,16 @@ func updateDNS(config *Config, ip string) error {
 
 // Main
 func main() {
+	log.Printf("Starting \n")
 	// load config
 	config, err := loadConfig("config.json")
 	if err != nil {
 		log.Printf("Error loading config: %v \n", err)
 	}
-
 	// set sleep time
 	interval := time.Duration(config.INTERVAL) * time.Second
 
+	log.Printf("Started \n")
 	for {
 		// log.Printf("Fetching current public IP...")
 		ip, err := getPublicIP(config)
