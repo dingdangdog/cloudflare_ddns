@@ -57,5 +57,5 @@ jobs:
           name: 🎉Release ${{ env.version }}
           tag_name: v${{ env.version }}
           append_body: true
-          body: v${{ env.version }}
+          body: Release ${{ matrix.os }}-${{ matrix.goarch }}-v${{ env.version }}
           files: build/*  # Upload all the binaries to the release
