@@ -33,9 +33,9 @@ jobs:
         run: |
           mkdir -p build  # Ensure the build directory exists
 
-      - name: Build whoisme for ${{ matrix.os }} and ${{ matrix.goarch }}
+      - name: Build whoiam for ${{ matrix.os }} and ${{ matrix.goarch }}
         run: |
-          GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/whoisme_server-${{ matrix.os }}-${{ matrix.goarch }} ip/whoisme.go
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/whoiam_server-${{ matrix.os }}-${{ matrix.goarch }} ip/whoiam.go
 
       - name: Build ddns for ${{ matrix.os }} and ${{ matrix.goarch }}
         run: |

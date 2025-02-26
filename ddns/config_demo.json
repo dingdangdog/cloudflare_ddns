@@ -9,7 +9,7 @@
     "DNS_TTL": 1, 
     "DNS_PROXIED": false
   },
-  "IP_API_URL": "http://xxx.com/whoisme",
+  "IP_API_URL": "http://xxx.com/whoiam",
   "DDD_CLIENT_ID": 0,
   "DDD_CLIENT_KEY": "Test_Cilent_Key",
   "MODE": "development",

@@ -21,30 +21,30 @@ ARCH=$(uname -m)
 echo "OS: $OS, Arch: $ARCH"
 
 # 4. 下载二进制文件和配置文件示例
-BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server"
+BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoiam_server"
 CONFIG_URL="https://raw.githubusercontent.com/$REPO/main/ip/config_demo.json"
 
 if [[ "$OS" == "Linux" && "$ARCH" == "x86_64" ]]; then
-    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-linux-amd64"
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoiam_server-linux-amd64"
 elif [[ "$OS" == "Darwin" && "$ARCH" == "x86_64" ]]; then
-    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-darwin-amd64"
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoiam_server-darwin-amd64"
 elif [[ "$OS" == "Darwin" && "$ARCH" == "arm64" ]]; then
-    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-darwin-arm64"
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoiam_server-darwin-arm64"
 elif [[ "$OS" == "Linux" && "$ARCH" == "aarch64" ]]; then
-    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-linux-arm64"
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoiam_server-linux-arm64"
 elif [[ "$OS" == "Windows" && "$ARCH" == "x86_64" ]]; then
-    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoisme_server-windows-amd64.exe"
+    BINARY_URL="https://github.com/$REPO/releases/download/$TAG/whoiam_server-windows-amd64.exe"
 else
     echo "Unsupported platform: $OS $ARCH"
     exit 1
 fi
 
 # 5. 设置下载的文件名
-BINARY_FILE="whoisme_server"
+BINARY_FILE="whoiam_server"
 CONFIG_FILE="config_demo.json"
 
 # 6. 下载二进制文件
-echo "downloading whoisme_server..."
+echo "downloading whoiam_server..."
 curl -L -o $BINARY_FILE $BINARY_URL
 
 # 7. 下载配置文件示例

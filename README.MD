@@ -18,19 +18,19 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 
 Modify the `config_demo.json` and run `ddns_client`.
 
-- whoisme_server
+- whoiam_server
 
 ```sh
-curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_whoisme.sh | bash
+curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_whoiam.sh | bash
 ```
 
-Modify the `config_demo.json` and run `whoisme_server`.
+Modify the `config_demo.json` and run `whoiam_server`.
 
 ### Manual
 
-1. Download `ddns_client` or `whoisme_server` from [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases), or [Package ddns_client](#Package_ddns_client) / [Package whoisme_server](#Package_whoisme_server) by yourself;
-2. Download ddns_client [config_demo.json](./ddns/config demo.json) or whoisme_server [config_demo.json](./ip/config_demo.json) to your device, rename it to `config.json`, and then edit the configuration information。
-3. Run `ddns_client` or `whoisme_server`。
+1. Download `ddns_client` or `whoiam_server` from [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases), or [Package ddns_client](#Package_ddns_client) / [Package whoiam_server](#Package_whoiam_server) by yourself;
+2. Download ddns_client [config_demo.json](./ddns/config demo.json) or whoiam_server [config_demo.json](./ip/config_demo.json) to your device, rename it to `config.json`, and then edit the configuration information。
+3. Run `ddns_client` or `whoiam_server`。
 
 ## ddns
 
@@ -67,7 +67,7 @@ go build -o ddns_client ddns.go
     "DNS_TTL": 1, // Fill in 1 to use the default value of cloudflare
     "DNS_PROXIED": false
   },
-  "IP_API_URL": "http://xxx.com/whoisme", // Interface to obtain the real public IP
+  "IP_API_URL": "http://xxx.com/whoiam", // Interface to obtain the real public IP
   "DDD_CLIENT_ID": 0, // Whoisme interface authorization id
   "DDD_CLIENT_KEY": "Test_Cilent_Key", // Whoisme interface authorization key
   "MODE": "development",
@@ -77,7 +77,7 @@ go build -o ddns_client ddns.go
 
 ## ip
 
-- [whoisme.go](./ip/whoisme.go)
+- [whoiam.go](./ip/whoiam.go)
 
 A simple service that gets the client's public IP and returns it.
 
@@ -87,10 +87,10 @@ A simple service that gets the client's public IP and returns it.
 
 ```sh
 cd ip
-go run whoisme.go
+go run whoiam.go
 ```
 
-### Package_whoisme_server
+### Package_whoiam_server
 
 > **Tip**: In the `Windows` development environment, please execute the command in the `CMD` terminal command line, not in `PowerShell`, otherwise the packaged result may not be executed normally
 
@@ -100,5 +100,5 @@ cd ip
 SET GOOS=linux
 SET GOARCH=amd64
 
-go build -o whoisme_server whoisme.go
+go build -o whoiam_server whoiam.go
 ```

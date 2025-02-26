@@ -18,19 +18,19 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 
 修改配置并运行 `ddns_client`。
 
-- whoisme_server
+- whoiam_server
 
 ```sh
-curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_whoisme.sh | bash
+curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_whoiam.sh | bash
 ```
 
-修改配置并运行 `whoisme_server`。
+修改配置并运行 `whoiam_server`。
 
 ### 手动安装
 
-1. 在 [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases) 中下载 `ddns_client` 或 `whoisme_server`，或者自行 [打包ddns_client](#打包ddns_client) / [打包whoisme_server](#打包whoisme_server)；
-2. 下载 ddns_client [配置示例](./ddns/config demo.json) 或者 whoisme_server [配置示例](./ip/config_demo.json) 到你的设备，重命名为 `config.json`，然后编辑你的配置信息；
-3. 运行 `ddns_client` 或 `whoisme_server`。
+1. 在 [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases) 中下载 `ddns_client` 或 `whoiam_server`，或者自行 [打包ddns_client](#打包ddns_client) / [打包whoiam_server](#打包whoiam_server)；
+2. 下载 ddns_client [配置示例](./ddns/config demo.json) 或者 whoiam_server [配置示例](./ip/config_demo.json) 到你的设备，重命名为 `config.json`，然后编辑你的配置信息；
+3. 运行 `ddns_client` 或 `whoiam_server`。
 
 ## ddns
 
@@ -69,9 +69,9 @@ go build -o ddns_client ddns.go
     "DNS_TTL": 1, // 填1会使用cloudflare默认值
     "DNS_PROXIED": false
   },
-  "IP_API_URL": "http://xxx.com/whoisme", // 获取 真实公网IP 的接口
-  "DDD_CLIENT_ID": 0, // whoisme接口授权id
-  "DDD_CLIENT_KEY": "Test_Cilent_Key", // whoisme接口授权key
+  "IP_API_URL": "http://xxx.com/whoiam", // 获取 真实公网IP 的接口
+  "DDD_CLIENT_ID": 0, // whoiam接口授权id
+  "DDD_CLIENT_KEY": "Test_Cilent_Key", // whoiam接口授权key
   "MODE": "development",
   "INTERVAL": 180
 }
@@ -79,13 +79,13 @@ go build -o ddns_client ddns.go
 
 ## ip
 
-- [whoisme.go](./ip/whoisme.go)
+- [whoiam.go](./ip/whoiam.go)
 
 功能：一个简单的获取客户端公网IP并返回的服务。
 
 用法：部署到你的另一台公网服务器上，`ddns_client` 请求服务器的这个接口，获取客户端真实IP并返回。
 
-### 打包whoisme_server
+### 打包whoiam_server
 
 > **提示**：下面是在 `Windows` 开发环境中的示例，请在 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
 
@@ -95,5 +95,5 @@ cd ip
 SET GOOS=linux
 SET GOARCH=amd64
 
-go build -o whoisme_server whoisme.go
+go build -o whoiam_server whoiam.go
 ```

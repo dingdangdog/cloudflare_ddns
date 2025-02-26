@@ -1,7 +1,7 @@
 services:
-  whoisme:
-    image: dingdangdog/cfddns:whoisme_0.1.2
-    container_name: whoisme
+  whoiam:
+    image: dingdangdog/cfddns:whoiam_0.1.2
+    container_name: whoiam
     restart: always
 #    network_mode: "host"
     ports:

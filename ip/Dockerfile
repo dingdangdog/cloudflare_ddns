@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . .
 
 # 构建 Go 应用
-RUN go build -o whoisme_server whoisme.go
+RUN go build -o whoiam_server whoiam.go
 
 # 使用官方 Alpine 镜像作为运行时镜像
 FROM alpine:latest
@@ -20,11 +20,11 @@ RUN apk add --no-cache libc6-compat
 
 # 复制构建好的二进制文件到容器
 COPY --from=builder /app/config_demo.json ./config.json
-COPY --from=builder /app/whoisme_server ./
-RUN chmod +x /app/whoisme_server
+COPY --from=builder /app/whoiam_server ./
+RUN chmod +x /app/whoiam_server
 
 VOLUME /app/config.json
 
 EXPOSE 12321
 # 设定容器启动命令
-CMD ["/app/whoisme_server"]
+CMD ["/app/whoiam_server"]

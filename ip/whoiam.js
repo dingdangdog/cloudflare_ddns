@@ -13,8 +13,8 @@ function getClientIP(request) {
   return clientIP;
 }
 
-// Handle the /whoisme endpoint
-async function handleWhoIsMe(request, env) {
+// Handle the /whoiam endpoint
+async function handleWhoiam(request, env) {
   const url = new URL(request.url);
   const id = url.searchParams.get("id");
   const key = url.searchParams.get("key");
@@ -44,7 +44,7 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/") {
-      return handleWhoIsMe(request, env);
+      return handleWhoiam(request, env);
     } else {
       return new Response("Not Found", { status: 404 });
     }

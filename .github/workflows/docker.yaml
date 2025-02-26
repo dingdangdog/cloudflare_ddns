@@ -36,12 +36,12 @@ jobs:
           docker build -t dingdangdog/cfddns:ddns_${{ env.version }} .
           docker push dingdangdog/cfddns:ddns_${{ env.version }}
 
-      # 步骤 5: 构建并推送 whoisme 镜像
-      - name: Build & Push whoisme image
+      # 步骤 5: 构建并推送 whoiam 镜像
+      - name: Build & Push whoiam image
         run: |
           cd ip
-          docker build -t dingdangdog/cfddns:whoisme_${{ env.version }} .
-          docker push dingdangdog/cfddns:whoisme_${{ env.version }}
+          docker build -t dingdangdog/cfddns:whoiam_${{ env.version }} .
+          docker push dingdangdog/cfddns:whoiam_${{ env.version }}
 
       # 步骤 6: 设置 Docker Buildx
       - name: Set up Docker Buildx
@@ -56,13 +56,13 @@ jobs:
             --tag dingdangdog/cfddns:ddns_${{ env.version }}_arm64 \
             --push .
 
-      # 步骤 8: 构建并推送 arm64 whoisme 镜像
-      - name: Build & Push whoisme arm64 image
+      # 步骤 8: 构建并推送 arm64 whoiam 镜像
+      - name: Build & Push whoiam arm64 image
         run: |
           cd ip
           docker buildx build \
             --platform linux/arm64 \
-            --tag dingdangdog/cfddns:whoisme_${{ env.version }}_arm64 \
+            --tag dingdangdog/cfddns:whoiam_${{ env.version }}_arm64 \
             --push .
 
       # 步骤 9: 清理 Docker 镜像
