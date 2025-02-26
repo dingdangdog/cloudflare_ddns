@@ -24,12 +24,12 @@ type CloudflareConfig struct {
 }
 
 type Config struct {
-	CLOUDFLARE     CloudflareConfig `json:"CLOUDFLARE"`
-	IP_API_URL     string           `json:"IP_API_URL"`
-	DDD_CLIENT_ID  int              `json:"DDD_CLIENT_ID"`
-	DDD_CLIENT_KEY string           `json:"DDD_CLIENT_KEY"`
-	MODE           string           `json:"MODE"`
-	INTERVAL       int              `json:"INTERVAL"`
+	CLOUDFLARE        CloudflareConfig `json:"CLOUDFLARE"`
+	IP_API_URL        string           `json:"IP_API_URL"`
+	WHOIAM_CLIENT_ID  int              `json:"WHOIAM_CLIENT_ID"`
+	WHOIAM_CLIENT_KEY string           `json:"WHOIAM_CLIENT_KEY"`
+	MODE              string           `json:"MODE"`
+	INTERVAL          int              `json:"INTERVAL"`
 }
 
 // Get json file content
@@ -51,7 +51,7 @@ func loadConfig(filePath string) (*Config, error) {
 // Get Public IP
 func getPublicIP(config *Config) (string, error) {
 	// 设置http get 请求的 url传参，参数为id 和 key
-	url := fmt.Sprintf("%s?id=%d&key=%s", config.IP_API_URL, config.DDD_CLIENT_ID, config.DDD_CLIENT_KEY)
+	url := fmt.Sprintf("%s?id=%d&key=%s", config.IP_API_URL, config.WHOIAM_CLIENT_ID, config.WHOIAM_CLIENT_KEY)
 	resp, err := http.Get(url)
 	if err != nil {
 		return "", fmt.Errorf("error getting public IP: %v", err)

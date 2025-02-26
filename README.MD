@@ -68,8 +68,8 @@ go build -o ddns_client ddns.go
     "DNS_PROXIED": false
   },
   "IP_API_URL": "http://xxx.com/whoiam", // Interface to obtain the real public IP
-  "DDD_CLIENT_ID": 0, // Whoisme interface authorization id
-  "DDD_CLIENT_KEY": "Test_Cilent_Key", // Whoisme interface authorization key
+  "WHOIAM_CLIENT_ID": 0, // Whoisme interface authorization id
+  "WHOIAM_CLIENT_KEY": "Test_Cilent_Key", // Whoisme interface authorization key
   "MODE": "development",
   "INTERVAL": 180
 }

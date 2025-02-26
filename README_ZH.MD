@@ -70,8 +70,8 @@ go build -o ddns_client ddns.go
     "DNS_PROXIED": false
   },
   "IP_API_URL": "http://xxx.com/whoiam", // 获取 真实公网IP 的接口
-  "DDD_CLIENT_ID": 0, // whoiam接口授权id
-  "DDD_CLIENT_KEY": "Test_Cilent_Key", // whoiam接口授权key
+  "WHOIAM_CLIENT_ID": 0, // whoiam接口授权id
+  "WHOIAM_CLIENT_KEY": "Test_Cilent_Key", // whoiam接口授权key
   "MODE": "development",
   "INTERVAL": 180
 }
