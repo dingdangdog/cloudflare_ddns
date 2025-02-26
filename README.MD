@@ -29,7 +29,7 @@ Modify the `config_demo.json` and run `whoiam_server`.
 ### Manual
 
 1. Download `ddns_client` or `whoiam_server` from [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases), or [Package ddns_client](#Package_ddns_client) / [Package whoiam_server](#Package_whoiam_server) by yourself;
-2. Download ddns_client [config_demo.json](./ddns/config demo.json) or whoiam_server [config_demo.json](./ip/config_demo.json) to your device, rename it to `config.json`, and then edit the configuration information。
+2. Download ddns_client [config_demo.json](./ddns/config demo.json) or whoiam_server [config_demo.json](./whoiam/config_demo.json) to your device, rename it to `config.json`, and then edit the configuration information。
 3. Run `ddns_client` or `whoiam_server`。
 
 ## ddns
@@ -75,9 +75,9 @@ go build -o ddns_client ddns.go
 }
 ```
 
-## ip
+## whoiam
 
-- [whoiam.go](./ip/whoiam.go)
+- [whoiam.go](./whoiam/whoiam.go)
 
 A simple service that gets the client's public IP and returns it.
 
@@ -86,7 +86,7 @@ A simple service that gets the client's public IP and returns it.
 ### Dev Run
 
 ```sh
-cd ip
+cd whoiam
 go run whoiam.go
 ```
 
@@ -96,9 +96,22 @@ go run whoiam.go
 
 ```bash
 # Packaging Linux binary files in Windows development environment
-cd ip
+cd whoiam
 SET GOOS=linux
 SET GOARCH=amd64
 
 go build -o whoiam_server whoiam.go
 ```
+
+### Public Free API
+
+Notice：
+
+1. Ensure the interface returns only the IP address! If you want to use other formats, please modify the code yourself!
+2. If it returns an IPv6 address, it cannot be used!
+
+| **Interface URL**     | **Usage Restrictions** | **Remarks**                                |
+| --------------------- | ---------------------- | ------------------------------------------ |
+| https://api.ipify.org | No restrictions, free  | Simple and easy to use                     |
+| https://icanhazip.com | No restrictions, free  | Operated by Cloudflare, returns plain text |
+| https://api.seeip.org | No restrictions, free  | Supports IPv4/IPv6, open source            |

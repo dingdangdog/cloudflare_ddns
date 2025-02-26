@@ -29,7 +29,7 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 ### 手动安装
 
 1. 在 [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases) 中下载 `ddns_client` 或 `whoiam_server`，或者自行 [打包ddns_client](#打包ddns_client) / [打包whoiam_server](#打包whoiam_server)；
-2. 下载 ddns_client [配置示例](./ddns/config demo.json) 或者 whoiam_server [配置示例](./ip/config_demo.json) 到你的设备，重命名为 `config.json`，然后编辑你的配置信息；
+2. 下载 ddns_client [配置示例](./ddns/config demo.json) 或者 whoiam_server [配置示例](./whoiam/config_demo.json) 到你的设备，重命名为 `config.json`，然后编辑你的配置信息；
 3. 运行 `ddns_client` 或 `whoiam_server`。
 
 ## ddns
@@ -77,9 +77,9 @@ go build -o ddns_client ddns.go
 }
 ```
 
-## ip
+## whoiam
 
-- [whoiam.go](./ip/whoiam.go)
+- [whoiam.go](./whoiam/whoiam.go)
 
 功能：一个简单的获取客户端公网IP并返回的服务。
 
@@ -91,9 +91,22 @@ go build -o ddns_client ddns.go
 
 ```bash
 # 打包Linux二进制文件，在Windows开发环境下的打包方式
-cd ip
+cd whoiam
 SET GOOS=linux
 SET GOARCH=amd64
 
 go build -o whoiam_server whoiam.go
 ```
+
+### 公开免费的服务
+
+注意：
+
+1. 保证接口返回值只有IP！如果想要使用其他格式，请自行修改代码！
+2. 如果返回IPV6的IP，则无法使用！
+
+| **接口地址**                                    | **使用限制**                  | **备注**                           |
+| ------------------------------------------- | ----------------------------- | ---------------------------------- |
+| https://api.ipify.org                       | 无限制，免费                  | 简单易用|
+| https://icanhazip.com                       | 无限制，免费                  | 由 Cloudflare 运营，纯文本返回     |
+| https://api.seeip.org                       | 无限制，免费                  | 支持 IPv4/IPv6，开放源代码         |
