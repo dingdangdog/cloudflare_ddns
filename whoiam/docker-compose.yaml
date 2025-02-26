@@ -1,7 +1,7 @@
 services:
   cfddns:
-    image: dingdangdog/cfddns:ddns_0.1.2
-    container_name: ddns
+    image: dingdangdog/cfddns:whoiam_0.1.2
+    container_name: whoiam
     restart: always
     # network_mode: "host"
     volumes:
