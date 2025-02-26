@@ -25,6 +25,6 @@ RUN chmod +x /app/ddns_client
 
 VOLUME /app/config.json
 
-EXPOSE 12321
+EXPOSE 12320
 # 设定容器启动命令
 CMD ["/app/ddns_client"]
