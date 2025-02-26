@@ -8,6 +8,14 @@
 
 > 🧨**提示**：无论自动还是手动安装，请自行修改配置 `config.json` ！如果使用其他获取IP服务，请自行修改源码（如果无需授权等，可以尝试不修改源码）
 
+**安装方式**：
+
+1. [自动安装脚本](#自动安装)（`ddns`/`whoiam`）；
+2. [手动下载](#手动安装)（`ddns`/`whoiam`）；
+3. 源码安装（`ddns`/`whoiam`）；这个就不介绍了，懂代码的一看就会了。
+4. [Docker](#docker)（`ddns`/`whoiam`）；
+5. [Cloudflare Workers](#cloudflareworkers)（`whoiam`）；
+
 ### 自动安装
 
 - ddns_client
@@ -32,7 +40,24 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 2. 下载 ddns_client [配置示例](./ddns/config demo.json) 或者 whoiam_server [配置示例](./whoiam/config_demo.json) 到你的设备，重命名为 `config.json`，然后编辑你的配置信息；
 3. 运行 `ddns_client` 或 `whoiam_server`。
 
-## ddns
+### Docker
+
+可以阅读对应的 `docker-compose.yaml` 文件内容，自信选择使用 `docker-compose` 还是 `docker run` 部署，这里就不再详细介绍了，请各位自行学习 `Docker` 吧！
+
+- [ddns: docker-compose.yaml](./ddns/docker-compose.yaml)
+- [whoiam: docker-compose.yaml](./whoiam/docker-compose.yaml)
+
+### CloudflareWorkers
+
+1. 在 `CloudFlare` 控制台中创建 `Worker`；
+2. 复制 [whoiam.js](./whoiam/whoiam.js) 的全部代码，填入 `worker`；
+3. 启动 `worker`；
+4. 配置环境变量 `CLIENT_KEYS`，可以配置多个，使用 `,` 间隔！
+5. 配置完成后点击 `部署` ，重新部署 `worker`。
+
+## 服务介绍
+
+### ddns
 
 - [ddns.go](./ddns/ddns.go)
 
@@ -40,7 +65,7 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 
 用法：部署到你的动态公网IP主机上，修改 [配置信息](./ddns/config_demo.json) 运行即可。
 
-### 打包ddns_client
+#### 打包ddns_client
 
 > **提示**：下面是在 `Windows` 开发环境中的示例，请使用 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
 
@@ -53,9 +78,9 @@ SET GOARCH=amd64
 go build -o ddns_client ddns.go
 ```
 
-### 配置参数说明
+#### 配置参数说明
 
-- [ddns/config_demo.json](./ddns/config_demo.json)
+- [config_demo.json](./ddns/config_demo.json)
 
 ```json
 {
@@ -77,7 +102,7 @@ go build -o ddns_client ddns.go
 }
 ```
 
-## whoiam
+### whoiam
 
 - [whoiam.go](./whoiam/whoiam.go)
 
@@ -85,7 +110,7 @@ go build -o ddns_client ddns.go
 
 用法：部署到你的另一台公网服务器上，`ddns_client` 请求服务器的这个接口，获取客户端真实IP并返回。
 
-### 打包whoiam_server
+#### 打包whoiam_server
 
 > **提示**：下面是在 `Windows` 开发环境中的示例，请在 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
 
@@ -100,13 +125,14 @@ go build -o whoiam_server whoiam.go
 
 ### 公开免费的服务
 
-注意：
+如果不想自己部署 `whoiam`，可以使用公开免费的接口，但是注意：
 
-1. 保证接口返回值只有IP！如果想要使用其他格式，请自行修改代码！
-2. 如果返回IPV6的IP，则无法使用！
+1. 保证接口能够被你的服务器访问（部分接口可能被中国大陆墙）；
+2. 保证接口返回值只有IP！如果想要使用其他格式，请自行修改代码！
+3. 如果返回IPV6的IP，则无法使用！
 
 | **接口地址**                                    | **使用限制**                  | **备注**                           |
 | ------------------------------------------- | ----------------------------- | ---------------------------------- |
-| https://api.ipify.org                       | 无限制，免费                  | 简单易用|
-| https://icanhazip.com                       | 无限制，免费                  | 由 Cloudflare 运营，纯文本返回     |
-| https://api.seeip.org                       | 无限制，免费                  | 支持 IPv4/IPv6，开放源代码         |
+| <https://api.ipify.org>                       | 无限制，免费                  | 简单易用|
+| <https://icanhazip.com>                       | 无限制，免费                  | 由 Cloudflare 运营，纯文本返回     |
+| <https://api.seeip.org>                       | 无限制，免费                  | 支持 IPv4/IPv6，开放源代码         |
