@@ -31,7 +31,7 @@ func loadConfig(filePath string) (*Config, error) {
 }
 
 // Processes the request and returns the client's IP address
-func whoisme(w http.ResponseWriter, r *http.Request) {
+func whoiam(w http.ResponseWriter, r *http.Request) {
 	// load config
 	configs, err := loadConfig("config.json")
 	if err != nil {
@@ -99,7 +99,7 @@ func lastip(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
-	http.HandleFunc("/whoisme", whoisme)
+	http.HandleFunc("/whoiam", whoiam)
 	http.HandleFunc("/lastip", lastip)
 	log.Println("Server starting on port 12321...")
 	err := http.ListenAndServe(":12321", nil)
