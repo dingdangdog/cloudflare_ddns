@@ -69,7 +69,7 @@ go build -o ddns_client ddns.go
     "DNS_TTL": 1, // 填1会使用cloudflare默认值
     "DNS_PROXIED": false
   },
-  "IP_API_URL": "http://xxx.com/whoiam", // 获取 真实公网IP 的接口
+  "WHOIAM_API_URL": "http://xxx.com/whoiam", // 获取 真实公网IP 的接口
   "WHOIAM_CLIENT_ID": 0, // whoiam接口授权id
   "WHOIAM_CLIENT_KEY": "Test_Cilent_Key", // whoiam接口授权key
   "MODE": "development",

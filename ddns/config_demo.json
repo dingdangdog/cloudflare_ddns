@@ -9,7 +9,7 @@
     "DNS_TTL": 1,
     "DNS_PROXIED": false
   },
-  "IP_API_URL": "http://xxx.com/whoiam",
+  "WHOIAM_API_URL": "http://xxx.com/whoiam",
   "WHOIAM_CLIENT_ID": 0,
   "WHOIAM_CLIENT_KEY": "Test_Cilent_Key",
   "MODE": "pro",

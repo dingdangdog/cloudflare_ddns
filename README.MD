@@ -67,7 +67,7 @@ go build -o ddns_client ddns.go
     "DNS_TTL": 1, // Fill in 1 to use the default value of cloudflare
     "DNS_PROXIED": false
   },
-  "IP_API_URL": "http://xxx.com/whoiam", // Interface to obtain the real public IP
+  "WHOIAM_API_URL": "http://xxx.com/whoiam", // Interface to obtain the real public IP
   "WHOIAM_CLIENT_ID": 0, // Whoisme interface authorization id
   "WHOIAM_CLIENT_KEY": "Test_Cilent_Key", // Whoisme interface authorization key
   "MODE": "development",
