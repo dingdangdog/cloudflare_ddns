@@ -24,12 +24,12 @@ type CloudflareConfig struct {
 }
 
 type Config struct {
-	CLOUDFLARE        CloudflareConfig `json:"CLOUDFLARE"`
-	WHOIAM_API_URL    string           `json:"WHOIAM_API_URL"`
-	WHOIAM_CLIENT_ID  int              `json:"WHOIAM_CLIENT_ID"`
-	WHOIAM_CLIENT_KEY string           `json:"WHOIAM_CLIENT_KEY"`
-	MODE              string           `json:"MODE"`
-	INTERVAL          int              `json:"INTERVAL"`
+	CLOUDFLARE        []CloudflareConfig `json:"CLOUDFLARE"`
+	WHOIAM_API_URL    string             `json:"WHOIAM_API_URL"`
+	WHOIAM_CLIENT_ID  int                `json:"WHOIAM_CLIENT_ID"`
+	WHOIAM_CLIENT_KEY string             `json:"WHOIAM_CLIENT_KEY"`
+	MODE              string             `json:"MODE"`
+	INTERVAL          int                `json:"INTERVAL"`
 }
 
 // Get json file content
@@ -68,47 +68,56 @@ func getPublicIP(config *Config) (string, error) {
 
 // Update Cloudflare DNS records
 func updateDNS(config *Config, ip string) error {
-	url := fmt.Sprintf("https://api.cloudflare.com/client/v4/zones/%s/dns_records/%s", config.CLOUDFLARE.CF_ZONE_ID, config.CLOUDFLARE.CF_RECORD_ID)
+	for _, cfConfig := range config.CLOUDFLARE {
+		url := fmt.Sprintf("https://api.cloudflare.com/client/v4/zones/%s/dns_records/%s", cfConfig.CF_ZONE_ID, cfConfig.CF_RECORD_ID)
+		domainNames := strings.Split(cfConfig.DNS_DOMAIN_NAME, ",")
+		for _, domainName := range domainNames {
+			domainName = strings.TrimSpace(domainName) // trim whitespace from domain name
+			if domainName == "" {
+				continue // skip empty domain names
+			}
 
-	// request header
-	headers := map[string]string{
-		"Authorization": fmt.Sprintf("Bearer %s", config.CLOUDFLARE.CF_API_TOKEN),
-		"Content-Type":  "application/json",
-	}
+			// request header
+			headers := map[string]string{
+				"Authorization": fmt.Sprintf("Bearer %s", cfConfig.CF_API_TOKEN),
+				"Content-Type":  "application/json",
+			}
 
-	// request body
-	data := fmt.Sprintf(`{
-		"type": "%s",
-		"name": "%s",
-		"content": "%s",
-		"ttl": %d,
-		"proxied": %t
-	}`, config.CLOUDFLARE.DNS_TYPE, config.CLOUDFLARE.DNS_DOMAIN_NAME, ip, config.CLOUDFLARE.DNS_TTL, config.CLOUDFLARE.DNS_PROXIED)
+			// request body
+			data := fmt.Sprintf(`{
+				"type": "%s",
+				"name": "%s",
+				"content": "%s",
+				"ttl": %d,
+				"proxied": %t
+			}`, cfConfig.DNS_TYPE, domainName, ip, cfConfig.DNS_TTL, cfConfig.DNS_PROXIED)
 
-	// create HTTP request
-	req, err := http.NewRequest("PUT", url, bytes.NewBuffer([]byte(data)))
-	if err != nil {
-		return fmt.Errorf("error creating request: %v", err)
-	}
+			// create HTTP request
+			req, err := http.NewRequest("PUT", url, bytes.NewBuffer([]byte(data)))
+			if err != nil {
+				return fmt.Errorf("error creating request for domain %s: %v", domainName, err)
+			}
 
-	// set request header
-	for key, value := range headers {
-		req.Header.Set(key, value)
-	}
+			// set request header
+			for key, value := range headers {
+				req.Header.Set(key, value)
+			}
 
-	// send request
-	client := &http.Client{}
-	resp, err := client.Do(req)
-	if err != nil {
-		return fmt.Errorf("error sending request: %v \n", err)
-	}
-	defer resp.Body.Close()
+			// send request
+			client := &http.Client{}
+			resp, err := client.Do(req)
+			if err != nil {
+				return fmt.Errorf("error sending request for domain %s: %v \n", domainName, err)
+			}
+			defer resp.Body.Close()
 
-	if resp.StatusCode == http.StatusOK {
-		log.Printf("DNS record updated successfully to IP: %s \n", ip)
-	} else {
-		body, _ := io.ReadAll(resp.Body)
-		return fmt.Errorf("failed to update DNS: %v - %s \n", resp.StatusCode, string(body))
+			if resp.StatusCode == http.StatusOK {
+				log.Printf("DNS record for domain %s updated successfully to IP: %s \n", domainName, ip)
+			} else {
+				body, _ := io.ReadAll(resp.Body)
+				return fmt.Errorf("failed to update DNS for domain %s: %v - %s \n", domainName, resp.StatusCode, string(body))
+			}
+		}
 	}
 
 	return nil
