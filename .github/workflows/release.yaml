@@ -35,7 +35,7 @@ jobs:
 
       - name: Build whoiam for ${{ matrix.os }} and ${{ matrix.goarch }}
         run: |
-          GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/whoiam_server-${{ matrix.os }}-${{ matrix.goarch }} ip/whoiam.go
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/whoiam_server-${{ matrix.os }}-${{ matrix.goarch }} whoiam/whoiam.go
 
       - name: Build ddns for ${{ matrix.os }} and ${{ matrix.goarch }}
         run: |

@@ -39,7 +39,7 @@ jobs:
       # 步骤 5: 构建并推送 whoiam 镜像
       - name: Build & Push whoiam image
         run: |
-          cd ip
+          cd whoiam
           docker build -t dingdangdog/cfddns:whoiam_${{ env.version }} .
           docker push dingdangdog/cfddns:whoiam_${{ env.version }}
 
@@ -59,7 +59,7 @@ jobs:
       # 步骤 8: 构建并推送 arm64 whoiam 镜像
       - name: Build & Push whoiam arm64 image
         run: |
-          cd ip
+          cd whoiam
           docker buildx build \
             --platform linux/arm64 \
             --tag dingdangdog/cfddns:whoiam_${{ env.version }}_arm64 \
