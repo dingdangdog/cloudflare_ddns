@@ -1,6 +1,6 @@
 services:
   cfddns:
-    image: dingdangdog/cfddns:ddns_0.1.2
+    image: dingdangdog/cfddns:ddns_0.1.4
     container_name: ddns
     restart: always
     # network_mode: "host"
