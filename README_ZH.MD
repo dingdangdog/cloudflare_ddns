@@ -42,7 +42,7 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 
 ### Docker
 
-可以阅读对应的 `docker-compose.yaml` 文件内容，自信选择使用 `docker-compose` 还是 `docker run` 部署，这里就不再详细介绍了，请各位自行学习 `Docker` 吧！
+可以阅读对应的 `docker-compose.yaml` 文件内容，自行选择使用 `docker-compose` 还是 `docker run` 部署，这里就不再详细介绍了，请各位自行学习 `Docker` 吧！
 
 - [ddns: docker-compose.yaml](./ddns/docker-compose.yaml)
 - [whoiam: docker-compose.yaml](./whoiam/docker-compose.yaml)
