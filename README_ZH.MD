@@ -37,7 +37,7 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 ### 手动安装
 
 1. 在 [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases) 中下载 `ddns_client` 或 `whoiam_server`，或者自行 [打包ddns_client](#打包ddns_client) / [打包whoiam_server](#打包whoiam_server)；
-2. 下载 ddns_client [配置示例](./ddns/config demo.json) 或者 whoiam_server [配置示例](./whoiam/config_demo.json) 到你的设备，重命名为 `config.json`，然后编辑你的配置信息；
+2. 下载 ddns_client [配置示例](./ddns/config_demo.json) 或者 whoiam_server [配置示例](./whoiam/config_demo.json) 到你的设备，重命名为 `config.json`，然后编辑你的配置信息；
 3. 运行 `ddns_client` 或 `whoiam_server`。
 
 ### Docker
