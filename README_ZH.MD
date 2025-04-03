@@ -110,7 +110,7 @@ go build -o ddns_client ddns.go
 
 功能：一个简单的获取客户端公网IP并返回的服务。
 
-用法：部署到你的另一台公网服务器上，`ddns_client` 请求服务器的这个接口，获取客户端真实IP并返回。
+用法：部署到你的另一台公网服务器上，使用 `ddns_client` 发起请求到 `whoiam` 服务，获取到 `ddns_client` 所在主机的真实公网IP。
 
 #### 打包whoiam_server
 
