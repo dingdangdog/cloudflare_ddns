@@ -80,4 +80,4 @@ jobs:
           name: 🎉Release ${{ env.version }}
           tag_name: v${{ env.version }}
           body: Release v${{ env.version }}
-          files: build/*
+          files: "build/**/*"
