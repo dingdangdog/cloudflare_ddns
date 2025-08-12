@@ -21,7 +21,6 @@ jobs:
       - name: Get version
         id: get_version
         run: |
-          # ... (你的版本获取逻辑) ...
           version=$(git describe --tags --always --match 'v*' | sed -n 's|^v\([0-9]*\.[0-9]*\.[0-9]*\)\(-.*\)\{0,1\}|\1|p')
           echo "version=$version" >> $GITHUB_ENV
 
@@ -41,19 +40,21 @@ jobs:
         run: |
           GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/ddns_client-${{ matrix.os }}-${{ matrix.goarch }} ddns/ddns.go
 
+      # ***关键改动***
+      # 使用独特的名称来上传 Artifact，比如：linux-amd64
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: all-binaries
+          name: ${{ matrix.os }}-${{ matrix.goarch }} # 使用os-arch作为Artifact名称，保证唯一
           path: build/*
-          retention-days: 1 # 设置一个短的保留期，以节省空间
+          retention-days: 1
 
   # Job 2: Create a single release after all builds are done
   release:
     runs-on: ubuntu-latest
-    needs: build # 确保在所有构建任务完成后才运行此任务
+    needs: build # 确保所有构建任务完成后才运行
     permissions:
-      contents: write # 授予写入权限以创建 Release
+      contents: write
 
     steps:
       - name: Checkout code
@@ -62,20 +63,20 @@ jobs:
       - name: Get version (from tag)
         id: get_version
         run: |
-          # 重新获取版本号，确保和构建任务中的一致
           version=$(git describe --tags --always --match 'v*' | sed -n 's|^v\([0-9]*\.[0-9]*\.[0-9]*\)\(-.*\)\{0,1\}|\1|p')
           echo "version=$version" >> $GITHUB_ENV
 
+      # ***关键改动***
+      # 下载所有Artifacts，不指定名称
       - name: Download all binaries
         uses: actions/download-artifact@v4
         with:
-          name: all-binaries
           path: build/ # 下载所有二进制文件到 build 目录
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          token: ${{ secrets.GH_TOKEN }} # 使用内置 token
+          token: ${{ secrets.GH_TOKEN }}
           name: 🎉Release ${{ env.version }}
           tag_name: v${{ env.version }}
           body: Release v${{ env.version }}
