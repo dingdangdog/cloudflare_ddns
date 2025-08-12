@@ -140,8 +140,7 @@ func main() {
 		ip, err := getPublicIP(config)
 		if err != nil {
 			log.Printf("Error fetching public IP: %v \n", err)
-			// sleep
-			time.Sleep(interval)
+			// 获取公网IP失败，立即重新执行
 			continue
 		}
 		// 按,分割ip，保留第一个元素，并去除空格
@@ -157,9 +156,6 @@ func main() {
 			continue
 		}
 		log.Printf("new IP: %s \n", ip)
-		// save the new IP to ip.last File
-		_ = os.WriteFile("ip.last", []byte(ip), 0644)
-
 		// log.Printf("Current public IP: %s \n", ip)
 
 		// Update Cloudflare DNS records
@@ -167,7 +163,13 @@ func main() {
 			err = updateDNS(config, ip)
 			if err != nil {
 				log.Printf("Error updating DNS: %v \n", err)
+				// 出现任何错误，重新执行全部任务
+				continue
 			}
+
+			// save the new IP to ip.last File
+			_ = os.WriteFile("ip.last", []byte(ip), 0644)
+			log.Printf("write new IP: %s \n", ip)
 		}
 
 		// sleep
