@@ -1,0 +1,9 @@
+services:
+  cfproxy:
+    image: dingdangdog/cfproxy:proxy_0.1.0
+    container_name: cfproxy
+    restart: always
+    volumes:
+      - ./config.json:/app/config.json
+    ports:
+      - 12322:12322

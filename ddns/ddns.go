@@ -28,6 +28,9 @@ type Config struct {
 	WHOIAM_API_URL    string             `json:"WHOIAM_API_URL"`
 	WHOIAM_CLIENT_ID  int                `json:"WHOIAM_CLIENT_ID"`
 	WHOIAM_CLIENT_KEY string             `json:"WHOIAM_CLIENT_KEY"`
+	PROXY_API_URL     string             `json:"PROXY_API_URL"`
+	PROXY_CLIENT_ID   int                `json:"PROXY_CLIENT_ID"`
+	PROXY_CLIENT_KEY  string             `json:"PROXY_CLIENT_KEY"`
 	MODE              string             `json:"MODE"`
 	INTERVAL          int                `json:"INTERVAL"`
 }
@@ -66,10 +69,9 @@ func getPublicIP(config *Config) (string, error) {
 	return string(ip), nil
 }
 
-// Update Cloudflare DNS records
+// Update Cloudflare DNS records via proxy
 func updateDNS(config *Config, ip string) error {
 	for _, cfConfig := range config.CLOUDFLARE {
-		url := fmt.Sprintf("https://api.cloudflare.com/client/v4/zones/%s/dns_records/%s", cfConfig.CF_ZONE_ID, cfConfig.CF_RECORD_ID)
 		domainNames := strings.Split(cfConfig.DNS_DOMAIN_NAME, ",")
 		for _, domainName := range domainNames {
 			domainName = strings.TrimSpace(domainName) // trim whitespace from domain name
@@ -77,19 +79,20 @@ func updateDNS(config *Config, ip string) error {
 				continue // skip empty domain names
 			}
 
-			// request header
-			headers := map[string]string{
-				"Authorization": fmt.Sprintf("Bearer %s", cfConfig.CF_API_TOKEN),
-				"Content-Type":  "application/json",
-			}
+			// 构建代理请求URL
+			proxyURL := fmt.Sprintf("%s/update-dns?client_id=%d&client_key=%s",
+				config.PROXY_API_URL, config.PROXY_CLIENT_ID, config.PROXY_CLIENT_KEY)
 
-			// request body - 使用结构体确保JSON格式正确
+			// 构建DNS更新请求体
 			requestBody := map[string]interface{}{
-				"type":    cfConfig.DNS_TYPE,
-				"name":    domainName,
-				"content": ip,
-				"ttl":     cfConfig.DNS_TTL,
-				"proxied": cfConfig.DNS_PROXIED,
+				"api_token": cfConfig.CF_API_TOKEN,
+				"zone_id":   cfConfig.CF_ZONE_ID,
+				"record_id": cfConfig.CF_RECORD_ID,
+				"type":      cfConfig.DNS_TYPE,
+				"name":      domainName,
+				"content":   ip,
+				"ttl":       cfConfig.DNS_TTL,
+				"proxied":   cfConfig.DNS_PROXIED,
 			}
 
 			jsonData, err := json.Marshal(requestBody)
@@ -97,18 +100,16 @@ func updateDNS(config *Config, ip string) error {
 				return fmt.Errorf("error marshaling JSON for domain %s: %v", domainName, err)
 			}
 
-			// create HTTP request - 使用PATCH方法
-			req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(jsonData))
+			// 创建HTTP请求
+			req, err := http.NewRequest("POST", proxyURL, bytes.NewBuffer(jsonData))
 			if err != nil {
 				return fmt.Errorf("error creating request for domain %s: %v", domainName, err)
 			}
 
-			// set request header
-			for key, value := range headers {
-				req.Header.Set(key, value)
-			}
+			// 设置请求头
+			req.Header.Set("Content-Type", "application/json")
 
-			// send request with timeout
+			// 发送请求
 			client := &http.Client{
 				Timeout: 30 * time.Second,
 			}
@@ -118,10 +119,15 @@ func updateDNS(config *Config, ip string) error {
 			}
 			defer resp.Body.Close()
 
+			// 读取响应
+			body, err := io.ReadAll(resp.Body)
+			if err != nil {
+				return fmt.Errorf("error reading response for domain %s: %v \n", domainName, err)
+			}
+
 			if resp.StatusCode == http.StatusOK {
 				log.Printf("DNS record for domain %s updated successfully to IP: %s \n", domainName, ip)
 			} else {
-				body, _ := io.ReadAll(resp.Body)
 				log.Printf("Failed to update DNS for domain %s: Status %d, Response: %s \n", domainName, resp.StatusCode, string(body))
 				return fmt.Errorf("failed to update DNS for domain %s: %v - %s \n", domainName, resp.StatusCode, string(body))
 			}

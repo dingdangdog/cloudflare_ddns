@@ -14,6 +14,9 @@
   "WHOIAM_API_URL": "http://xxx.com/whoiam",
   "WHOIAM_CLIENT_ID": 0,
   "WHOIAM_CLIENT_KEY": "Test_Cilent_Key",
+  "PROXY_API_URL": "http://xxx.com/proxy",
+  "PROXY_CLIENT_ID": 0,
+  "PROXY_CLIENT_KEY": "Test_Client_Key",
   "MODE": "pro",
   "INTERVAL": 180
 }
