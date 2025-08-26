@@ -135,6 +135,18 @@ go build -o ddns_client ddns.go
 - 作用：代理服务，解决客户端无法直接调用Cloudflare API的问题。
 - 用法：部署到可以访问Cloudflare API的服务器上，客户端通过此代理服务更新DNS记录。
 
+#### 打包proxy_server
+
+> **提示**：下面是在 `Windows` 开发环境中的示例，请在 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
+
+```bash
+# 打包Linux二进制文件，在Windows开发环境下的打包方式
+cd proxyapi
+SET GOOS=linux
+SET GOARCH=amd64
+
+go build -o proxy_server proxy.go
+```
 
 ### whoiam
 
@@ -153,19 +165,6 @@ SET GOOS=linux
 SET GOARCH=amd64
 
 go build -o whoiam_server whoiam.go
-```
-
-#### 打包proxy_server
-
-> **提示**：下面是在 `Windows` 开发环境中的示例，请在 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
-
-```bash
-# 打包Linux二进制文件，在Windows开发环境下的打包方式
-cd proxyapi
-SET GOOS=linux
-SET GOARCH=amd64
-
-go build -o proxy_server proxy.go
 ```
 
 ### 公开免费的服务
