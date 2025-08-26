@@ -7,6 +7,7 @@ COPY proxy.go .
 
 # 构建应用
 RUN go mod init proxyapi && \
+    go mod tidy && \
     go build -o proxy_server proxy.go
 
 # 运行阶段

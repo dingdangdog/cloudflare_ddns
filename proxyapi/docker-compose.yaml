@@ -1,6 +1,6 @@
 services:
   cfproxy:
-    image: dingdangdog/cfproxy:proxy_0.1.0
+    image: dingdangdog/cfddns:proxy_latest
     container_name: cfproxy
     restart: always
     volumes:

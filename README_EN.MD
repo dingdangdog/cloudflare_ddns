@@ -34,6 +34,14 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 
 Modify the `config_demo.json` and run `whoiam_server`.
 
+- proxy_server
+
+```sh
+curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_proxy.sh | bash
+```
+
+Modify the `config_demo.json` and run `proxy_server`.
+
 ### Manual
 
 1. Download `ddns_client` or `whoiam_server` from [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases), or [Package ddns_client](#package_ddns_client) / [Package whoiam_server](#package_whoiam_server) by yourself;
@@ -46,6 +54,7 @@ You can read the contents of the corresponding docker-compose.yaml files and con
 
 - [ddns: docker-compose.yaml](./ddns/docker-compose.yaml)
 - [whoiam: docker-compose.yaml](./whoiam/docker-compose.yaml)
+- [proxyapi: docker-compose.yaml](./proxyapi/docker-compose.yaml)
 
 ### Cloudflare Workers
 
@@ -107,6 +116,14 @@ go build -o ddns_client ddns.go
 A simple service that gets the client's public IP and returns it.
 
 > deploy on the server, `ddns client` requests this interface of the server, obtains the client's real IP and returns it.
+
+### proxyapi
+
+- [proxy.go](./proxyapi/proxy.go) | [proxy.js](./proxyapi/proxy.js)
+
+A proxy service that solves the problem of clients being unable to directly call Cloudflare API.
+
+> deploy on a server that can access Cloudflare API, clients update DNS records through this proxy service.
 
 #### Dev Run
 

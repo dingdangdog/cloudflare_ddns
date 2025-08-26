@@ -40,6 +40,10 @@ jobs:
         run: |
           GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/ddns_client-${{ matrix.os }}-${{ matrix.goarch }} ddns/ddns.go
 
+      - name: Build proxyapi for ${{ matrix.os }} and ${{ matrix.goarch }}
+        run: |
+          GOOS=${{ matrix.os }} GOARCH=${{ matrix.goarch }} go build -o build/proxy_server-${{ matrix.os }}-${{ matrix.goarch }} proxyapi/proxy.go
+
       # ***关键改动***
       # 使用独特的名称来上传 Artifact，比如：linux-amd64
       - name: Upload Build Artifacts

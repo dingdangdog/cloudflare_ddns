@@ -46,6 +46,14 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 
 修改其配置并运行 `whoiam_server`。
 
+- proxy_server（代理服务）
+
+```sh
+curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_proxy.sh | bash
+```
+
+修改其配置并运行 `proxy_server`。
+
 ### 手动安装
 
 1. 在 [Last Release](https://github.com/dingdangdog/cloudflare_ddns/releases) 中下载 `ddns_client` 或 `whoiam_server`，或者自行 [打包ddns_client](#打包ddns_client) / [打包whoiam_server](#打包whoiam_server)；
@@ -58,6 +66,7 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 
 - [ddns: docker-compose.yaml](./ddns/docker-compose.yaml)
 - [whoiam: docker-compose.yaml](./whoiam/docker-compose.yaml)
+- [proxyapi: docker-compose.yaml](./proxyapi/docker-compose.yaml)
 
 ### CloudflareWorkers
 
@@ -74,6 +83,12 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 - 代码：[ddns.go](./ddns/ddns.go)
 - 作用：想办法拿到真实 `IP`，拿到 `IP` 后调用 `Cloudflare API` 修改 `DNS` 记录。
 - 用法：部署到你的动态公网IP主机上，修改 [配置信息](./ddns/config_demo.json) 运行即可。
+
+### proxyapi
+
+- 代码：[proxy.go](./proxyapi/proxy.go) | [proxy.js](./proxyapi/proxy.js)
+- 作用：代理服务，解决客户端无法直接调用Cloudflare API的问题。
+- 用法：部署到可以访问Cloudflare API的服务器上，客户端通过此代理服务更新DNS记录。
 
 #### 打包ddns_client
 
@@ -131,6 +146,19 @@ SET GOOS=linux
 SET GOARCH=amd64
 
 go build -o whoiam_server whoiam.go
+```
+
+#### 打包proxy_server
+
+> **提示**：下面是在 `Windows` 开发环境中的示例，请在 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
+
+```bash
+# 打包Linux二进制文件，在Windows开发环境下的打包方式
+cd proxyapi
+SET GOOS=linux
+SET GOARCH=amd64
+
+go build -o proxy_server proxy.go
 ```
 
 ### 公开免费的服务
