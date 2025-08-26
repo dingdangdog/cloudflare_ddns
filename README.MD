@@ -87,12 +87,6 @@ curl -sSL https://github.com/dingdangdog/cloudflare_ddns/raw/main/script/update_
 - 作用：想办法拿到真实 `IP`，拿到 `IP` 后调用 `Cloudflare API` 修改 `DNS` 记录。
 - 用法：部署到你的动态公网IP主机上，修改 [配置信息](./ddns/config_demo.json) 运行即可。
 
-### proxyapi
-
-- 代码：[proxy.go](./proxyapi/proxy.go) | [proxy.js](./proxyapi/proxy.js)
-- 作用：代理服务，解决客户端无法直接调用Cloudflare API的问题。
-- 用法：部署到可以访问Cloudflare API的服务器上，客户端通过此代理服务更新DNS记录。
-
 #### 打包ddns_client
 
 > **提示**：下面是在 `Windows` 开发环境中的示例，请使用 `CMD` 终端命令行执行命令，不要在 `PowerShell` 中执行，否则打包的结果可能无法正常执行
@@ -127,10 +121,20 @@ go build -o ddns_client ddns.go
   "WHOIAM_API_URL": "http://xxx.com/whoiam", // 获取 真实公网IP 的接口
   "WHOIAM_CLIENT_ID": 0, // 与 whoiam 搭配使用，接口授权 id
   "WHOIAM_CLIENT_KEY": "Test_Cilent_Key", // 与 whoiam 搭配使用，接口授权key
+  "PROXY_API_URL": "http://xxx.com/proxy", // 代理CF更新DNS的api
+  "PROXY_CLIENT_ID": 0, // 与 proxyapi 搭配使用，接口授权 id
+  "PROXY_CLIENT_KEY": "Test_Cilent_Key", // 与 proxyapi 搭配使用，接口授权key
   "MODE": "development", // 开发模式，无论是否重复IP，都会更新DNS配置，如果不是开发模式，会自动与上一次IP校验，详情请阅读代码
   "INTERVAL": 180 // 轮询时间间隔，单位为秒
 }
 ```
+
+### proxyapi
+
+- 代码：[proxy.go](./proxyapi/proxy.go) | [proxy.js](./proxyapi/proxy.js)
+- 作用：代理服务，解决客户端无法直接调用Cloudflare API的问题。
+- 用法：部署到可以访问Cloudflare API的服务器上，客户端通过此代理服务更新DNS记录。
+
 
 ### whoiam
 
