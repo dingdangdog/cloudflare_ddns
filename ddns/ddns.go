@@ -83,17 +83,22 @@ func updateDNS(config *Config, ip string) error {
 				"Content-Type":  "application/json",
 			}
 
-			// request body
-			data := fmt.Sprintf(`{
-				"type": "%s",
-				"name": "%s",
-				"content": "%s",
-				"ttl": %d,
-				"proxied": %t
-			}`, cfConfig.DNS_TYPE, domainName, ip, cfConfig.DNS_TTL, cfConfig.DNS_PROXIED)
+			// request body - 使用结构体确保JSON格式正确
+			requestBody := map[string]interface{}{
+				"type":    cfConfig.DNS_TYPE,
+				"name":    domainName,
+				"content": ip,
+				"ttl":     cfConfig.DNS_TTL,
+				"proxied": cfConfig.DNS_PROXIED,
+			}
 
-			// create HTTP request
-			req, err := http.NewRequest("PUT", url, bytes.NewBuffer([]byte(data)))
+			jsonData, err := json.Marshal(requestBody)
+			if err != nil {
+				return fmt.Errorf("error marshaling JSON for domain %s: %v", domainName, err)
+			}
+
+			// create HTTP request - 使用PATCH方法
+			req, err := http.NewRequest("PATCH", url, bytes.NewBuffer(jsonData))
 			if err != nil {
 				return fmt.Errorf("error creating request for domain %s: %v", domainName, err)
 			}
@@ -103,8 +108,10 @@ func updateDNS(config *Config, ip string) error {
 				req.Header.Set(key, value)
 			}
 
-			// send request
-			client := &http.Client{}
+			// send request with timeout
+			client := &http.Client{
+				Timeout: 30 * time.Second,
+			}
 			resp, err := client.Do(req)
 			if err != nil {
 				return fmt.Errorf("error sending request for domain %s: %v \n", domainName, err)
@@ -115,6 +122,7 @@ func updateDNS(config *Config, ip string) error {
 				log.Printf("DNS record for domain %s updated successfully to IP: %s \n", domainName, ip)
 			} else {
 				body, _ := io.ReadAll(resp.Body)
+				log.Printf("Failed to update DNS for domain %s: Status %d, Response: %s \n", domainName, resp.StatusCode, string(body))
 				return fmt.Errorf("failed to update DNS for domain %s: %v - %s \n", domainName, resp.StatusCode, string(body))
 			}
 		}
