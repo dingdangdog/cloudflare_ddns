@@ -4,6 +4,8 @@
 
 快速实现基于Cloudflare的DDNS。
 
+**悲报：现在调用CF的API报错：`curl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to api.cloudflare.com:443`，看来需要上科技了。。。**
+
 用法简介：
 
 1. 在你需要实现 DDNS 的主机上，安装 `ddns_client`；
