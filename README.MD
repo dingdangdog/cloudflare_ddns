@@ -4,7 +4,10 @@
 
 快速实现基于Cloudflare的DDNS。
 
-**悲报：现在调用CF的API报错：`curl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to api.cloudflare.com:443`，看来需要上科技了。。。**
+> **悲报：现在调用CF的API报错：`curl: (35) OpenSSL SSL_connect: SSL_ERROR_SYSCALL in connection to api.cloudflare.com:443`，看来需要上科技了。。。**
+> 
+> 为了解决调用CFAPI报错问题，临时增加了代理接口 `proxyapi`，因此从 `1.0.0` 版本以后，配置有所变化，请自行阅读学习。
+
 
 用法简介：
 
